@@ -1,8 +1,9 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { APP_PIPE } from '@nestjs/core';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { CardsModule } from './cards/cards.module';
-import Joi from 'joi';
+import DatabaseModule from './database/database.module';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -14,6 +15,17 @@ import Joi from 'joi';
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
+      }),
+    }),
+    DatabaseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        host: configService.get('POSTGRES_HOST'),
+        port: configService.get('POSTGRES_PORT'),
+        user: configService.get('POSTGRES_USER'),
+        password: configService.get('POSTGRES_PASSWORD'),
+        database: configService.get('POSTGRES_DB'),
       }),
     }),
   ],
