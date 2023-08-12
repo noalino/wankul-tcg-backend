@@ -1,26 +1,42 @@
 version: '3'
+
 services:
-  postgres:
-    container_name: postgres-nestjs
-    image: postgres:latest
-    ports:
-      - '5432:5432'
+  api:
+    build:
+      context: .
+      target: install-dependencies
+    container_name: api
+    command: pnpm start:dev
     volumes:
-      - /data/postgres:/data/postgres
+      - ./src:/user/src/app/src
+    env_file:
+      - .env
+    ports:
+      - '3000:3000'
+    depends_on:
+      - db
+    networks:
+      - postgres
+
+  db:
+    image: postgres:15.4
+    container_name: postgres
+    ports:
+      - '54320:5432'
+    volumes:
+      - db_data:/var/lib/postgresql/data
     env_file:
       - docker.env
     networks:
       - postgres
 
   pgadmin:
-    links:
-      - postgres:postgres
-    container_name: pgadmin-nestjs
-    image: dpage/pgadmin4
+    image: dpage/pgadmin4:7.5
+    container_name: pgadmin
     ports:
-      - '8080:80'
+      - '5050:80'
     volumes:
-      - /data/pgadmin:/root/.pgadmin
+      - pgadmin_data:/var/lib/pgadmin
     env_file:
       - docker.env
     networks:
@@ -29,3 +45,7 @@ services:
 networks:
   postgres:
     driver: bridge
+
+volumes:
+  db_data:
+  pgadmin_data:
