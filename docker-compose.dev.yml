@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
     ports:
-      - '3000:3000'
+      - ${API_PORT}:${API_PORT}
     depends_on:
       - db
     networks:
@@ -22,7 +22,7 @@ services:
     image: postgres:15.4
     container_name: postgres
     ports:
-      - '54320:5432'
+      - ${PG_HOST_PORT}:${POSTGRES_PORT}
     volumes:
       - db_data:/var/lib/postgresql/data
     env_file:
@@ -34,7 +34,7 @@ services:
     image: dpage/pgadmin4:7.5
     container_name: pgadmin
     ports:
-      - '5050:80'
+      - ${PGADMIN_HOST_PORT}:80
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     env_file:
