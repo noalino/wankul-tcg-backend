@@ -1,5 +1,6 @@
 export interface Card {
   id: number;
+  number: number;
   name: string;
   artist: Artist;
   collection: Collection;
