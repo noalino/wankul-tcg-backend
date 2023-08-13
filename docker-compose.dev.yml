@@ -4,8 +4,11 @@ services:
   api:
     build:
       context: .
-      target: run
+      target: install-dependencies
     container_name: api
+    command: pnpm start:dev
+    volumes:
+      - ./src:/user/src/app/src
     env_file:
       - .env
     ports:
