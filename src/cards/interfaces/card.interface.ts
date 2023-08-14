@@ -9,35 +9,35 @@ export interface Card {
   rarity: Rarity;
 }
 
-enum Artist {
-  LeonardLam = 'Léonard Lam',
-  BenGilletti = 'Ben Gilletti',
-  Jaycee = 'Jaycee',
-  Yuriiick = 'Yuriiick',
-  Lhotus = 'Lhotus',
-  MaelLohbrunner = 'Mael Lohbrunner',
-  ZeroRedge = '0 Redge',
+export enum Artist {
+  'Léonard Lam',
+  'Ben Gilletti',
+  'Jaycee',
+  'Yuriiick',
+  'Lhotus',
+  'Mael Lohbrunner',
+  '0 Redge',
 }
 
-enum Collection {
-  Origins = 'Origins',
+export enum Collection {
+  'Origins',
 }
 
-enum Effigy {
-  Laink = 'Laink',
-  Terracid = 'Terracid',
-  Guest = 'Guest',
-  Random = 'Random',
+export enum Effigy {
+  'Laink',
+  'Terracid',
+  'Guest',
+  'Random',
 }
 
-enum Rarity {
-  Common = 'Commune',
-  LessCommon = 'Peu commune',
-  Land = 'Terrain',
-  Rare = 'Rare',
-  UltraRareHolo1 = 'Ultra Rare Holo 1',
-  UltraRareHolo2 = 'Ultra Rare Holo 2',
-  LegendaryBronze = 'Légendaire Bronze',
-  LegendarySilver = 'Légendaire Argent',
-  LegendaryGold = 'Légendaire Or',
+export enum Rarity {
+  'Terrain',
+  'Commune',
+  'Peu commune',
+  'Rare',
+  'Ultra Rare Holo 1',
+  'Ultra Rare Holo 2',
+  'Légendaire Bronze',
+  'Légendaire Argent',
+  'Légendaire Or',
 }
