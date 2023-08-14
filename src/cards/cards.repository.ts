@@ -1,25 +1,27 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import DatabaseService from '../database/database.service';
+import { plainToInstance } from 'class-transformer';
+import { CardModel } from './card.model';
 
 @Injectable()
 class CardsRepository {
-  constructor(private readonly databaseService: DatabaseService) {}
+  constructor(private readonly dbService: DatabaseService) {}
 
   async getAll() {
-    const databaseResponse = await this.databaseService.runQuery(`
+    const dbResponse = await this.dbService.runQuery(`
       SELECT * FROM cards
     `);
-    return databaseResponse.rows;
+    return plainToInstance(CardModel, dbResponse.rows);
   }
 
   async getById(id: number) {
-    const databaseResponse = await this.databaseService.runQuery(
+    const dbResponse = await this.dbService.runQuery(
       `
       SELECT * FROM cards WHERE id=$1
     `,
       [id],
     );
-    const entity = databaseResponse.rows[0];
+    const entity = dbResponse.rows[0];
     if (!entity) {
       throw new NotFoundException();
     }

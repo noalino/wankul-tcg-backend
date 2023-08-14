@@ -1,4 +1,4 @@
-export interface Card {
+export class CardModel {
   id: number;
   number: number;
   name: string;
