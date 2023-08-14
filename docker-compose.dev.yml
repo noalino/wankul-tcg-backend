@@ -6,7 +6,7 @@ services:
       context: .
       target: install-dependencies
     container_name: api
-    command: pnpm start:dev
+    command: npm run start:dev
     volumes:
       - ./src:/user/src/app/src
     env_file:
