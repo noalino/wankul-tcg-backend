@@ -1,4 +1,5 @@
-import { Logger, Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
+
 import CardsRepository from './cards.repository';
 import { GetCardsQueryDto } from './dto/getcards.dto';
 
