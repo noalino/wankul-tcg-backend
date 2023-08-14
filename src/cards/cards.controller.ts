@@ -1,14 +1,15 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Query, Param } from '@nestjs/common';
 import { CardsService } from './cards.service';
 import FindOneParams from '../utils/findOneParams';
+import { GetCardsQueryDto } from './dto/getcards.dto';
 
 @Controller('cards')
 export class CardsController {
   constructor(private readonly cardsService: CardsService) {}
 
   @Get()
-  getCards() {
-    return this.cardsService.getCards();
+  getCards(@Query() query: GetCardsQueryDto) {
+    return this.cardsService.getCards(query);
   }
 
   @Get(':id')
