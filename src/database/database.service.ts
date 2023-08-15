@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Pool } from 'pg';
+
 import { CONNECTION_POOL } from './database.module-definition';
 
 @Injectable()

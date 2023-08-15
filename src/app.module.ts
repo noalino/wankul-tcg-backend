@@ -1,9 +1,10 @@
 import { Module, ValidationPipe } from '@nestjs/common';
-import { APP_PIPE } from '@nestjs/core';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_PIPE } from '@nestjs/core';
+import * as Joi from 'joi';
+
 import { CardsModule } from './cards/cards.module';
 import DatabaseModule from './database/database.module';
-import * as Joi from 'joi';
 
 @Module({
   imports: [
