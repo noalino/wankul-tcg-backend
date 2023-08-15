@@ -10,6 +10,7 @@ export class GetCardsQueryDto {
     value
       .trim()
       .split(',')
+      .filter((str: string) => str.length > 0) // Filter out empty strings, Number('') == 0
       .map((str: string) => Number(str)),
   )
   artist?: Artist[];
@@ -20,6 +21,7 @@ export class GetCardsQueryDto {
     value
       .trim()
       .split(',')
+      .filter((str: string) => str.length > 0)
       .map((str: string) => Number(str)),
   )
   effigy?: Effigy[];
@@ -30,6 +32,7 @@ export class GetCardsQueryDto {
     value
       .trim()
       .split(',')
+      .filter((str: string) => str.length > 0)
       .map((str: string) => Number(str)),
   )
   rarity?: Rarity[];

@@ -8,7 +8,7 @@ export class CardsService {
   constructor(private readonly cardsRepository: CardsRepository) {}
 
   getCards(query: GetCardsQueryDto) {
-    return this.cardsRepository.getAll();
+    return this.cardsRepository.getAll(query);
   }
 
   getCardById(id: number) {

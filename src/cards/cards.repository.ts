@@ -9,10 +9,26 @@ import { GetCardsQueryDto } from './dto/getcards.dto';
 class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
-  async getAll() {
-    const dbResponse = await this.dbService.runQuery(`
+  async getAll(query: GetCardsQueryDto) {
+    // Remove empty filters
+    Object.keys(query)
+      .filter((key) => !query[key] || query[key].length <= 0)
+      .forEach((key) => delete query[key]);
+
+    const [queryKeys, queryValues] = [Object.keys(query), Object.values(query)];
+    const dbResponse = await this.dbService.runQuery(
+      `
       SELECT * FROM cards
-    `);
+      ${
+        queryKeys.length <= 0
+          ? ''
+          : `WHERE ${queryKeys
+              .map((key, i) => `${key} = ANY($${i + 1}::"int2"[])`)
+              .join(' AND ')}`
+      }
+    `,
+      queryValues,
+    );
     return plainToInstance(CardModel, dbResponse.rows);
   }
 
