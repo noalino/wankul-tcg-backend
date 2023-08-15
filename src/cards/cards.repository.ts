@@ -3,7 +3,7 @@ import { plainToInstance } from 'class-transformer';
 
 import DatabaseService from '../database/database.service';
 import { CardModel } from './card.model';
-import { GetCardsQueryDto } from './dto/getcards.dto';
+import { GetCardsQueryDto } from './dto/getCards.dto';
 
 @Injectable()
 class CardsRepository {
