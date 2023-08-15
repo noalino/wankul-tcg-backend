@@ -26,7 +26,7 @@ class CardsRepository {
 
     const createQueryString = () =>
       `
-      SELECT * FROM cards
+      SELECT *, COUNT(*) OVER()::int AS total_cards_count FROM cards
       ${
         filterKeys.length <= 0
           ? ''
@@ -44,7 +44,10 @@ class CardsRepository {
       limit,
     ]);
 
-    return plainToInstance(CardModel, dbResponse.rows);
+    const count: number = dbResponse.rows[0]?.total_cards_count || 0;
+    const items = plainToInstance(CardModel, dbResponse.rows);
+
+    return { count, items };
   }
 
   async getById(id: number) {

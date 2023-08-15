@@ -1,3 +1,5 @@
+import { Exclude } from 'class-transformer';
+
 export class CardModel {
   id: number;
   number: number;
@@ -7,6 +9,8 @@ export class CardModel {
   effigy: Effigy | null;
   image: string;
   rarity: Rarity;
+  @Exclude()
+  total_cards_count: number;
 }
 
 export enum Artist {
