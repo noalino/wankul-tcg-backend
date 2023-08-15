@@ -29,6 +29,11 @@ class CardsRepository {
     `,
       queryValues,
     );
+
+    if (dbResponse.rows.length <= 0) {
+      throw new NotFoundException();
+    }
+
     return plainToInstance(CardModel, dbResponse.rows);
   }
 
@@ -39,10 +44,12 @@ class CardsRepository {
     `,
       [id],
     );
+
     const entity = dbResponse.rows[0];
     if (!entity) {
       throw new NotFoundException();
     }
+
     return entity;
   }
 }
