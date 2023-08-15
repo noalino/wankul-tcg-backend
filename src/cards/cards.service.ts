@@ -1,14 +1,14 @@
 import { Injectable, Logger } from '@nestjs/common';
 
 import CardsRepository from './cards.repository';
-import { GetCardsQueryDto } from './dto/getCards.dto';
+import { FilterQueryDto, PaginationQueryDto } from './dto/getCards.dto';
 
 @Injectable()
 export class CardsService {
   constructor(private readonly cardsRepository: CardsRepository) {}
 
-  getCards(query: GetCardsQueryDto) {
-    return this.cardsRepository.getAll(query);
+  getCards(filter: FilterQueryDto, { limit, offset }: PaginationQueryDto) {
+    return this.cardsRepository.getAll(filter, limit, offset);
   }
 
   getCardById(id: number) {

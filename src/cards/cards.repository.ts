@@ -3,36 +3,46 @@ import { plainToInstance } from 'class-transformer';
 
 import DatabaseService from '../database/database.service';
 import { CardModel } from './card.model';
-import { GetCardsQueryDto } from './dto/getCards.dto';
+import { FilterQueryDto } from './dto/getCards.dto';
 
 @Injectable()
 class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
-  async getAll(query: GetCardsQueryDto) {
+  async getAll(
+    filter: FilterQueryDto,
+    limit: number | null = null,
+    offset = 0,
+  ) {
     // Remove empty filters
-    Object.keys(query)
-      .filter((key) => !query[key] || query[key].length <= 0)
-      .forEach((key) => delete query[key]);
+    Object.keys(filter)
+      .filter((key) => !filter[key] || filter[key].length <= 0)
+      .forEach((key) => delete filter[key]);
 
-    const [queryKeys, queryValues] = [Object.keys(query), Object.values(query)];
-    const dbResponse = await this.dbService.runQuery(
+    const [filterKeys, filterValues] = [
+      Object.keys(filter),
+      Object.values(filter),
+    ];
+
+    const createQueryString = () =>
       `
       SELECT * FROM cards
       ${
-        queryKeys.length <= 0
+        filterKeys.length <= 0
           ? ''
-          : `WHERE ${queryKeys
+          : `WHERE ${filterKeys
               .map((key, i) => `${key} = ANY($${i + 1}::"int2"[])`)
               .join(' AND ')}`
       }
-    `,
-      queryValues,
-    );
+      OFFSET $${filterKeys.length + 1}
+      LIMIT $${filterKeys.length + 2}
+    `;
 
-    if (dbResponse.rows.length <= 0) {
-      throw new NotFoundException();
-    }
+    const dbResponse = await this.dbService.runQuery(createQueryString(), [
+      ...filterValues,
+      offset,
+      limit,
+    ]);
 
     return plainToInstance(CardModel, dbResponse.rows);
   }
