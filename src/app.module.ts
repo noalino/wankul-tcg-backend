@@ -1,10 +1,16 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_PIPE } from '@nestjs/core';
 import * as Joi from 'joi';
 
 import { CardsModule } from './cards/cards.module';
 import DatabaseModule from './database/database.module';
+import LoggerMiddleware from './middleware/logger.middleware';
 
 @Module({
   imports: [
@@ -39,4 +45,8 @@ import DatabaseModule from './database/database.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*');
+  }
+}
