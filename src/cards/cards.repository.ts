@@ -34,6 +34,7 @@ class CardsRepository {
               .map((key, i) => `${key} = ANY($${i + 1}::"int2"[])`)
               .join(' AND ')}`
       }
+      ORDER BY number ASC
       OFFSET $${filterKeys.length + 1}
       LIMIT $${filterKeys.length + 2}
     `;
