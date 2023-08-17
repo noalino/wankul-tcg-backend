@@ -9,7 +9,15 @@ import { CardModel } from './models/card.model';
 class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
-  async getAll(filter: FilterQueryDto, limit = 20, offset = 0) {
+  async find({
+    filter,
+    limit = 20,
+    offset = 0,
+  }: {
+    filter: FilterQueryDto;
+    limit: number | null;
+    offset: number;
+  }) {
     // Remove empty filters
     Object.keys(filter)
       .filter((key) => !filter[key] || filter[key].length <= 0)
@@ -47,7 +55,7 @@ class CardsRepository {
     return { totalCount, itemsCount: items.length, offset, items };
   }
 
-  async getById(id: number) {
+  async findOneBy({ id }: { id: string }) {
     const dbResponse = await this.dbService.runQuery(
       `
       SELECT * FROM cards WHERE id=$1
