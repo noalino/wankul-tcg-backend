@@ -43,6 +43,7 @@ export class PaginationQueryDto {
   @IsOptional()
   @Min(1)
   @Type(() => Number)
+  @Transform(({ value }) => value || null)
   limit?: number;
 
   @IsNumber()

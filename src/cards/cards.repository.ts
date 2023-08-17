@@ -9,11 +9,7 @@ import { FilterQueryDto } from './dto/getCards.dto';
 class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
-  async getAll(
-    filter: FilterQueryDto,
-    limit: number | null = null,
-    offset = 0,
-  ) {
+  async getAll(filter: FilterQueryDto, limit = 20, offset = 0) {
     // Remove empty filters
     Object.keys(filter)
       .filter((key) => !filter[key] || filter[key].length <= 0)
@@ -45,10 +41,10 @@ class CardsRepository {
       limit,
     ]);
 
-    const count: number = dbResponse.rows[0]?.total_cards_count || 0;
+    const totalCount: number = dbResponse.rows[0]?.total_cards_count || 0;
     const items = plainToInstance(CardModel, dbResponse.rows);
 
-    return { count, items };
+    return { totalCount, itemsCount: items.length, offset, items };
   }
 
   async getById(id: number) {
