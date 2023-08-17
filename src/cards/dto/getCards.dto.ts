@@ -1,7 +1,7 @@
 import { Transform, Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
 
-import { Artist, Effigy, Rarity } from '../card.model';
+import { Artist, Effigy, Rarity } from '../models/card.model';
 
 export class FilterQueryDto {
   @IsEnum(Artist, { each: true })
