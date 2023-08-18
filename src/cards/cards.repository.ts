@@ -9,14 +9,35 @@ import { CardModel, ListCardModel } from './models/card.model';
 export class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
+  private createQueryString(filters: unknown[]): string {
+    const queryLines = [
+      'SELECT *, COUNT(*) OVER()::int AS total_cards_count FROM cards',
+    ];
+
+    if (filters.length > 0) {
+      const whereClauses = `WHERE ${filters
+        .map((key, i) => `${key} = ANY($${i + 1}::"int2"[])`)
+        .join(' AND ')}`;
+      queryLines.push(whereClauses);
+    }
+
+    queryLines.push(
+      'ORDER BY number ASC',
+      `OFFSET $${filters.length + 1}`,
+      `LIMIT $${filters.length + 2}`,
+    );
+
+    return queryLines.join('\n');
+  }
+
   async find({
     filter,
     limit = 20,
     offset = 0,
   }: {
     filter: Omit<GetCardsQueryDto, 'limit' | 'offset'>;
-    limit: GetCardsQueryDto['limit'];
-    offset: GetCardsQueryDto['offset'];
+    limit?: GetCardsQueryDto['limit'];
+    offset?: GetCardsQueryDto['offset'];
   }) {
     // Remove empty filters
     Object.keys(filter)
@@ -28,31 +49,20 @@ export class CardsRepository {
       Object.values(filter),
     ];
 
-    const createQueryString = () =>
-      `
-      SELECT *, COUNT(*) OVER()::int AS total_cards_count FROM cards
-      ${
-        filterKeys.length <= 0
-          ? ''
-          : `WHERE ${filterKeys
-              .map((key, i) => `${key} = ANY($${i + 1}::"int2"[])`)
-              .join(' AND ')}`
-      }
-      ORDER BY number ASC
-      OFFSET $${filterKeys.length + 1}
-      LIMIT $${filterKeys.length + 2}
-    `;
-
-    const dbResponse = await this.dbService.runQuery(createQueryString(), [
-      ...filterValues,
-      offset,
-      limit,
-    ]);
+    const dbResponse = await this.dbService.runQuery(
+      this.createQueryString(filterKeys),
+      [...filterValues, offset, limit],
+    );
 
     const totalCount: number = dbResponse.rows[0]?.total_cards_count || 0;
     const items = plainToInstance(ListCardModel, dbResponse.rows);
 
-    return { totalCount, itemsCount: items.length, offset, items };
+    return {
+      totalCount,
+      itemsCount: dbResponse.rowCount,
+      offset,
+      items,
+    };
   }
 
   async findOneBy({ id }: { id: string }) {
