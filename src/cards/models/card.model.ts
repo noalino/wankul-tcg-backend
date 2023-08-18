@@ -6,7 +6,7 @@ export class CardModel {
   name: string;
   artist: Artist;
   collection: Collection;
-  effigy: Effigy | null;
+  effigy: Effigy;
   image: string;
   rarity: Rarity;
 }
@@ -31,6 +31,7 @@ export enum Collection {
 }
 
 export enum Effigy {
+  'Aucune',
   'Laink',
   'Terracid',
   'Guest',
