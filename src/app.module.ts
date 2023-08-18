@@ -41,6 +41,7 @@ import LoggerMiddleware from './middleware/logger.middleware';
       provide: APP_PIPE,
       useValue: new ValidationPipe({
         transform: true,
+        whitelist: true,
       }),
     },
   ],
