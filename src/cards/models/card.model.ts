@@ -1,7 +1,7 @@
 import { Exclude } from 'class-transformer';
 
 export class CardModel {
-  id: number;
+  id: string;
   number: number;
   name: string;
   artist: Artist;
@@ -9,6 +9,9 @@ export class CardModel {
   effigy: Effigy | null;
   image: string;
   rarity: Rarity;
+}
+
+export class ListCardModel extends CardModel {
   @Exclude()
   total_cards_count: number;
 }

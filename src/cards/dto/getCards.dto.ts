@@ -3,7 +3,22 @@ import { IsEnum, IsNumber, IsOptional, Min } from 'class-validator';
 
 import { Artist, Effigy, Rarity } from '../models/card.model';
 
-export class FilterQueryDto {
+class PaginationQueryDto {
+  @IsNumber()
+  @IsOptional()
+  @Min(1)
+  @Type(() => Number)
+  @Transform(({ value }) => value || null)
+  limit?: number | null;
+
+  @IsNumber()
+  @IsOptional()
+  @Min(0)
+  @Type(() => Number)
+  offset?: number;
+}
+
+export class GetCardsQueryDto extends PaginationQueryDto {
   @IsEnum(Artist, { each: true })
   @IsOptional()
   @Transform(({ value }) =>
@@ -36,19 +51,4 @@ export class FilterQueryDto {
       .map((str: string) => Number(str)),
   )
   rarity?: Rarity[];
-}
-
-export class PaginationQueryDto {
-  @IsNumber()
-  @IsOptional()
-  @Min(1)
-  @Type(() => Number)
-  @Transform(({ value }) => value || null)
-  limit?: number;
-
-  @IsNumber()
-  @IsOptional()
-  @Min(0)
-  @Type(() => Number)
-  offset?: number;
 }

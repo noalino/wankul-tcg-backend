@@ -2,11 +2,11 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import DatabaseService from '../database/database.service';
-import { FilterQueryDto } from './dto/getCards.dto';
-import { CardModel } from './models/card.model';
+import { GetCardsQueryDto } from './dto/getCards.dto';
+import { CardModel, ListCardModel } from './models/card.model';
 
 @Injectable()
-class CardsRepository {
+export class CardsRepository {
   constructor(private readonly dbService: DatabaseService) {}
 
   async find({
@@ -14,9 +14,9 @@ class CardsRepository {
     limit = 20,
     offset = 0,
   }: {
-    filter: FilterQueryDto;
-    limit: number | null;
-    offset: number;
+    filter: Omit<GetCardsQueryDto, 'limit' | 'offset'>;
+    limit: GetCardsQueryDto['limit'];
+    offset: GetCardsQueryDto['offset'];
   }) {
     // Remove empty filters
     Object.keys(filter)
@@ -50,7 +50,7 @@ class CardsRepository {
     ]);
 
     const totalCount: number = dbResponse.rows[0]?.total_cards_count || 0;
-    const items = plainToInstance(CardModel, dbResponse.rows);
+    const items = plainToInstance(ListCardModel, dbResponse.rows);
 
     return { totalCount, itemsCount: items.length, offset, items };
   }
@@ -68,8 +68,6 @@ class CardsRepository {
       throw new NotFoundException();
     }
 
-    return entity;
+    return plainToInstance(CardModel, entity);
   }
 }
-
-export default CardsRepository;
