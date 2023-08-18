@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
-import DatabaseService from '../database/database.service';
+import { DatabaseService } from '../database/database.service';
 import { GetCardsQueryDto } from './dto/getCards.dto';
 import { CardModel, ListCardModel } from './models/card.model';
 

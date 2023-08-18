@@ -6,7 +6,7 @@ import {
   CONNECTION_POOL,
   DATABASE_OPTIONS,
 } from './database.module-definition';
-import DatabaseService from './database.service';
+import { DatabaseService } from './database.service';
 import DatabaseOptions from './databaseOptions';
 
 @Global()
@@ -29,4 +29,4 @@ import DatabaseOptions from './databaseOptions';
     },
   ],
 })
-export default class DatabaseModule extends ConfigurableDatabaseModule {}
+export class DatabaseModule extends ConfigurableDatabaseModule {}

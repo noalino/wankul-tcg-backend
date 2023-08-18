@@ -9,7 +9,7 @@ import { APP_PIPE } from '@nestjs/core';
 import * as Joi from 'joi';
 
 import { CardsModule } from './cards/cards.module';
-import DatabaseModule from './database/database.module';
+import { DatabaseModule } from './database/database.module';
 import LoggerMiddleware from './middleware/logger.middleware';
 
 @Module({
