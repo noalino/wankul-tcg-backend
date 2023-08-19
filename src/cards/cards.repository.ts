@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 
 import { DatabaseService } from '../database/database.service';
+import { removeEmptyValues } from '../utils/helpers';
 import { GetCardsQueryDto } from './dto/getCards.dto';
 import { CardModel, ListCardModel } from './models/card.model';
 
@@ -39,10 +40,7 @@ export class CardsRepository {
     limit?: GetCardsQueryDto['limit'];
     offset?: GetCardsQueryDto['offset'];
   }) {
-    // Remove empty filters
-    Object.keys(filter)
-      .filter((key) => !filter[key] || filter[key].length <= 0)
-      .forEach((key) => delete filter[key]);
+    removeEmptyValues(filter);
 
     const [filterKeys, filterValues] = [
       Object.keys(filter),
