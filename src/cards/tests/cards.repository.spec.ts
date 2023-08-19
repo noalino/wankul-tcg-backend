@@ -6,10 +6,10 @@ import { DatabaseService } from '../../database/database.service';
 import { CardsRepository } from '../cards.repository';
 import {
   Artist,
-  CardModel,
+  Card,
   Collection,
   Effigy,
-  ListCardModel,
+  ListCard,
   Rarity,
 } from '../models/card.model';
 
@@ -24,7 +24,7 @@ describe('CardsRepository', () => {
         {
           provide: DatabaseService,
           useValue: {
-            runQuery: jest.fn().mockResolvedValue({ rows: [], rowCount: 0 }),
+            runQuery: jest.fn().mockResolvedValue({ rows: [] }),
           },
         },
       ],
@@ -95,13 +95,11 @@ describe('CardsRepository', () => {
       it('Without data', async () => {
         expect.assertions(1);
 
-        databaseService.runQuery = jest
-          .fn()
-          .mockResolvedValue({ rowCount: 0, rows: [] });
+        databaseService.runQuery = jest.fn().mockResolvedValue({ rows: [] });
         const result = await cardsRepository.find(param);
         expect(result).toStrictEqual({
-          totalCount: 0,
-          itemsCount: 0,
+          total: 0,
+          limit: 20,
           offset: 0,
           items: [],
         });
@@ -110,9 +108,9 @@ describe('CardsRepository', () => {
       it('With data', async () => {
         expect.assertions(1);
 
-        const totalCount = 30;
-        const defaultLimit = 20;
-        const items = Array.from({ length: totalCount }).map((_, i) => ({
+        const total = 30;
+        const limit = 20;
+        const items = Array.from({ length: total }).map((_, i) => ({
           id: 'abcd' + i,
           name: 'card name',
           number: i + 1,
@@ -121,18 +119,16 @@ describe('CardsRepository', () => {
           artist: Artist['Jaycee'],
           effigy: Effigy['Laink'],
           rarity: Rarity['Commune'],
-          total_cards_count: totalCount,
+          total_cards_count: total,
         }));
         const expectedResult = {
-          totalCount: totalCount,
-          itemsCount: defaultLimit,
+          total,
+          limit,
           offset: 0,
-          items: plainToInstance(ListCardModel, items),
+          items: plainToInstance(ListCard, items),
         };
 
-        databaseService.runQuery = jest
-          .fn()
-          .mockResolvedValue({ rowCount: defaultLimit, rows: items });
+        databaseService.runQuery = jest.fn().mockResolvedValue({ rows: items });
         const result = await cardsRepository.find(param);
         expect(result).toStrictEqual(expectedResult);
       });
@@ -158,7 +154,7 @@ describe('CardsRepository', () => {
     `,
         [param.id],
       );
-      expect(result).toStrictEqual(plainToInstance(CardModel, foundCard));
+      expect(result).toStrictEqual(plainToInstance(Card, foundCard));
     });
 
     it('should return a NotFoundException when there is no card found', async () => {

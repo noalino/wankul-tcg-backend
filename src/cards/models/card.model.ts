@@ -1,6 +1,6 @@
 import { Exclude } from 'class-transformer';
 
-export class CardModel {
+export class Card {
   id: string;
   number: number;
   name: string;
@@ -11,7 +11,7 @@ export class CardModel {
   rarity: Rarity;
 }
 
-export class ListCardModel extends CardModel {
+export class ListCard extends Card {
   @Exclude()
   total_cards_count: number;
 }

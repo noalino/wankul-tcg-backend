@@ -13,7 +13,7 @@ describe('CardsController (e2e)', () => {
   let runQueryMock: jest.Mock;
 
   beforeEach(async () => {
-    runQueryMock = jest.fn().mockResolvedValue({ rowCount: 0, rows: [] });
+    runQueryMock = jest.fn().mockResolvedValue({ rows: [] });
     const moduleFixture: TestingModule = await Test.createTestingModule({
       controllers: [CardsController],
       providers: [
@@ -99,29 +99,28 @@ describe('CardsController (e2e)', () => {
 
       beforeEach(() => {
         runQueryMock.mockResolvedValue({
-          rowCount: 1,
           rows: [dbCard],
         });
       });
 
-      it(`should return 200 with response`, () => {
+      it(`should return 200 with default pagination`, () => {
         return request(app.getHttpServer())
           .get(`/cards`)
           .expect(200)
           .expect({
-            totalCount: 1,
-            itemsCount: 1,
+            total: 1,
+            limit: 20,
             offset: 0,
             items: [card],
           });
       });
-      it(`should return 200 with response including offset`, () => {
+      it(`should return 200 with specified pagination`, () => {
         return request(app.getHttpServer())
           .get(`/cards?limit=10&offset=5`)
           .expect(200)
           .expect({
-            totalCount: 1,
-            itemsCount: 1,
+            total: 1,
+            limit: 10,
             offset: 5,
             items: [card],
           });

@@ -4,7 +4,8 @@ import { plainToInstance } from 'class-transformer';
 import { DatabaseService } from '../database/database.service';
 import { removeEmptyValues } from '../utils/helpers';
 import { GetCardsQueryDto } from './dto/getCards.dto';
-import { CardModel, ListCardModel } from './models/card.model';
+import { PaginatedDto } from './dto/paginated.dto';
+import { Card, ListCard } from './models/card.model';
 
 @Injectable()
 export class CardsRepository {
@@ -39,7 +40,7 @@ export class CardsRepository {
     filter: Omit<GetCardsQueryDto, 'limit' | 'offset'>;
     limit?: GetCardsQueryDto['limit'];
     offset?: GetCardsQueryDto['offset'];
-  }) {
+  }): Promise<PaginatedDto<Card>> {
     removeEmptyValues(filter);
 
     const [filterKeys, filterValues] = [
@@ -52,12 +53,12 @@ export class CardsRepository {
       [...filterValues, offset, limit],
     );
 
-    const totalCount: number = dbResponse.rows[0]?.total_cards_count || 0;
-    const items = plainToInstance(ListCardModel, dbResponse.rows);
+    const total: number = dbResponse.rows[0]?.total_cards_count || 0;
+    const items = plainToInstance(ListCard, dbResponse.rows);
 
     return {
-      totalCount,
-      itemsCount: dbResponse.rowCount,
+      total,
+      limit,
       offset,
       items,
     };
@@ -76,6 +77,6 @@ export class CardsRepository {
       throw new NotFoundException();
     }
 
-    return plainToInstance(CardModel, entity);
+    return plainToInstance(Card, entity);
   }
 }
