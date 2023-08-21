@@ -1,20 +1,7 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 
-export class Card {
-  id: string;
-  number: number;
-  name: string;
-  artist: Artist;
-  collection: Collection;
-  effigy: Effigy;
-  image: string;
-  rarity: Rarity;
-}
-
-export class ListCard extends Card {
-  @Exclude()
-  total_cards_count: number;
-}
+import { createEnumDescription } from '../../utils/helpers';
 
 export enum Artist {
   'Léonard Lam',
@@ -31,7 +18,7 @@ export enum Collection {
 }
 
 export enum Effigy {
-  'Aucune',
+  'None',
   'Laink',
   'Terracid',
   'Guest',
@@ -48,4 +35,47 @@ export enum Rarity {
   'Légendaire Bronze',
   'Légendaire Argent',
   'Légendaire Or',
+}
+
+export class Card {
+  @ApiProperty()
+  id: string;
+
+  @ApiProperty()
+  number: number;
+
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  image: string;
+
+  @ApiProperty({
+    enum: Collection,
+    description: createEnumDescription(Collection),
+  })
+  collection: Collection;
+
+  @ApiProperty({
+    enum: Artist,
+    description: createEnumDescription(Artist),
+  })
+  artist: Artist;
+
+  @ApiProperty({
+    enum: Effigy,
+    description: createEnumDescription(Effigy),
+  })
+  effigy: Effigy;
+
+  @ApiProperty({
+    enum: Rarity,
+    description: createEnumDescription(Rarity),
+  })
+  rarity: Rarity;
+}
+
+export class ListCard extends Card {
+  @Exclude()
+  total_cards_count: number;
 }
