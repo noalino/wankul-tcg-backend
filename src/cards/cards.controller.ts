@@ -2,6 +2,7 @@ import { Controller, Get, Param, Query } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiTags,
   getSchemaPath,
@@ -43,6 +44,12 @@ export class CardsController {
   }
 
   @Get(':id')
+  @ApiOkResponse({
+    description: 'Success',
+    type: Card,
+  })
+  @ApiBadRequestResponse({ description: 'Bad Request' })
+  @ApiNotFoundResponse({ description: 'Not Found' })
   getCardById(@Param() { id }: GetCardByIdParamsDto) {
     return this.cardsService.getCardById(id);
   }
