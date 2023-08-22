@@ -11,6 +11,7 @@ import * as Joi from 'joi';
 import { CardsModule } from './cards/cards.module';
 import { DatabaseModule } from './database/database.module';
 import LoggerMiddleware from './middleware/logger.middleware';
+import securityHeaders from './middleware/securityHeaders.middleware';
 
 @Module({
   imports: [
@@ -48,6 +49,6 @@ import LoggerMiddleware from './middleware/logger.middleware';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(securityHeaders, LoggerMiddleware).forRoutes('*');
   }
 }
