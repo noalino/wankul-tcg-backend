@@ -1,4 +1,13 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  MethodNotAllowedException,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiExtraModels,
@@ -43,6 +52,21 @@ export class CardsController {
     return this.cardsService.getCards(query);
   }
 
+  @Post()
+  createCards() {
+    throw new MethodNotAllowedException();
+  }
+
+  @Put()
+  updateCards() {
+    throw new MethodNotAllowedException();
+  }
+
+  @Delete()
+  removeCards() {
+    throw new MethodNotAllowedException();
+  }
+
   @Get(':id')
   @ApiOkResponse({
     description: 'Success',
@@ -52,5 +76,20 @@ export class CardsController {
   @ApiNotFoundResponse({ description: 'Not Found' })
   getCardById(@Param() { id }: GetCardByIdParamsDto) {
     return this.cardsService.getCardById(id);
+  }
+
+  @Post(':id')
+  createCard() {
+    throw new MethodNotAllowedException();
+  }
+
+  @Put(':id')
+  updateCard() {
+    throw new MethodNotAllowedException();
+  }
+
+  @Delete(':id')
+  removeCard() {
+    throw new MethodNotAllowedException();
   }
 }
