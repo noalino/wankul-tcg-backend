@@ -15,6 +15,16 @@ services:
     networks:
       - postgres
 
+  doc:
+    build:
+      context: .
+      target: serve-doc
+    container_name: doc
+    env_file:
+      - .env
+    ports:
+      - ${API_DOC_PORT}:8080
+
   db:
     image: postgres:15.4
     container_name: postgres

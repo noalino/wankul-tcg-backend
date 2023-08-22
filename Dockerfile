@@ -14,7 +14,15 @@ COPY . .
 FROM base AS create-build
 COPY --from=install-dependencies /user/src/app ./
 RUN --mount=type=cache,id=npm,target=/usr/src/app/.npm npm run build
+
+# Generate and serve documentation
+FROM base AS serve-doc
+RUN chown node .
 USER node
+COPY --from=install-dependencies /user/src/app/node_modules ./node_modules
+COPY ./src ./src
+COPY package.json tsconfig.doc.json *.md ./
+CMD ["npm", "run", "doc:serve"]
 
 # Run the application in production
 FROM base AS run
