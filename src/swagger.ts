@@ -5,14 +5,12 @@ import {
   SwaggerModule,
 } from '@nestjs/swagger';
 
-import { version } from '../package.json';
+import { description, version } from '../package.json';
 
 export function setupSwagger(app: INestApplication): void {
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Wankul-TCG')
-    .setDescription(
-      'The Wankul-TCG API exposes the cards from the Wankul TCG created by Wankil Studio.',
-    )
+    .setDescription(description)
     .setVersion(version)
     .build();
   const swaggerOptions: SwaggerDocumentOptions = {
