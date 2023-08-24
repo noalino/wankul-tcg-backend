@@ -1,21 +1,36 @@
 default:
   image: node:18-alpine
 
+.cache:
+  cache:
+    key:
+      files:
+        - package.json
+    paths:
+      - node_modules
+    policy: pull
+
 build:
   stage: build
+  extends:
+    - .cache
   script:
     - npm ci
     - npm run lint
     - npm run build
+  cache:
+    policy: pull-push # Overwrite policy
 
 test:unit:
   stage: test
+  extends:
+    - .cache
   script:
-    - npm ci
     - npm run test
 
 test:e2e:
   stage: test
+  extends:
+    - .cache
   script:
-    - npm ci
     - npm run test:e2e
