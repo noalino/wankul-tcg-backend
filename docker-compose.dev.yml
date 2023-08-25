@@ -8,7 +8,7 @@ services:
     container_name: api
     command: npm run start:dev
     ports:
-      - 3000:3000
+      - 3010:3000
     volumes:
       - ./src:/user/src/app/src
     env_file:
@@ -26,7 +26,7 @@ services:
     image: postgres:15.4
     container_name: postgres
     ports:
-      - 54320:5432
+      - 3012:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./config/db:/docker-entrypoint-initdb.d
@@ -41,7 +41,7 @@ services:
     image: dpage/pgadmin4:7.5
     container_name: pgadmin
     ports:
-      - 54321:80
+      - 3013:80
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     env_file:

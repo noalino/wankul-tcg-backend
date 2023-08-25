@@ -7,7 +7,7 @@ services:
       target: run
     container_name: api
     ports:
-      - 3000:3000
+      - 3010:3000
     env_file:
       - .env
     environment:
@@ -25,13 +25,13 @@ services:
       target: serve-doc
     container_name: doc
     ports:
-      - 3001:8080
+      - 3011:8080
 
   db:
     image: postgres:15.4
     container_name: postgres
     ports:
-      - 54320:5432
+      - 3012:5432
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./config/db:/docker-entrypoint-initdb.d
@@ -46,7 +46,7 @@ services:
     image: dpage/pgadmin4:7.5
     container_name: pgadmin
     ports:
-      - 54321:80
+      - 3013:80
     volumes:
       - pgadmin_data:/var/lib/pgadmin
     env_file:
