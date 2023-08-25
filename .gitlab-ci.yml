@@ -34,3 +34,18 @@ test:e2e:
     - .cache
   script:
     - npm run test:e2e
+
+deploy:
+  stage: deploy
+  script:
+    - echo "POSTGRES_USER=$POSTGRES_USER" >> .env
+    - echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> .env
+    - echo "PGADMIN_DEFAULT_EMAIL=$PGADMIN_DEFAULT_EMAIL" >> .env
+    - echo "PGADMIN_DEFAULT_PASSWORD=$PGADMIN_DEFAULT_PASSWORD" >> .env
+    - docker compose down --remove-orphans
+    - docker compose up -d --force-recreate
+  only:
+    - main@noalino/wankul-tcg-backend
+  tags:
+    - linux
+    - shell
