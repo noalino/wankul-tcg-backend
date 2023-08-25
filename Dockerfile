@@ -1,8 +1,8 @@
 # Create base image
 FROM node:18-alpine AS base
+WORKDIR /user/src/app
 RUN npm install -g npm
 RUN npm set cache ./.npm
-WORKDIR /user/src/app
 
 # Install dependencies
 FROM base AS install-dependencies
