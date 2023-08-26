@@ -1,6 +1,6 @@
 {
   "name": "wankul-tcg-backend",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "The Wankul-TCG API exposes the cards from the Wankul TCG created by Wankil Studio.",
   "author": "Noalino",
   "private": true,
