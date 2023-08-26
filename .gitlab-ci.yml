@@ -20,6 +20,8 @@ build:
     - npm run build
   cache:
     policy: pull-push # Overwrite policy
+  except:
+    - tags
 
 test:unit:
   stage: test
@@ -27,6 +29,8 @@ test:unit:
     - .cache
   script:
     - npm run test
+  except:
+    - tags
 
 test:e2e:
   stage: test
@@ -34,6 +38,8 @@ test:e2e:
     - .cache
   script:
     - npm run test:e2e
+  except:
+    - tags
 
 deploy:
   stage: deploy
