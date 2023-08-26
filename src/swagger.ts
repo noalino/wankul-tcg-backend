@@ -21,5 +21,7 @@ export function setupSwagger(app: INestApplication): void {
     swaggerConfig,
     swaggerOptions,
   );
-  SwaggerModule.setup('api', app, swaggerDocument);
+  SwaggerModule.setup('api', app, swaggerDocument, {
+    customSiteTitle: 'Wankul-TCG Swagger',
+  });
 }

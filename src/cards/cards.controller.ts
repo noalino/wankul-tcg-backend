@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiExcludeEndpoint,
   ApiExtraModels,
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -53,16 +54,19 @@ export class CardsController {
   }
 
   @Post()
+  @ApiExcludeEndpoint()
   createCards() {
     throw new MethodNotAllowedException();
   }
 
   @Put()
+  @ApiExcludeEndpoint()
   updateCards() {
     throw new MethodNotAllowedException();
   }
 
   @Delete()
+  @ApiExcludeEndpoint()
   removeCards() {
     throw new MethodNotAllowedException();
   }
@@ -79,16 +83,19 @@ export class CardsController {
   }
 
   @Post(':id')
+  @ApiExcludeEndpoint()
   createCard() {
     throw new MethodNotAllowedException();
   }
 
   @Put(':id')
+  @ApiExcludeEndpoint()
   updateCard() {
     throw new MethodNotAllowedException();
   }
 
   @Delete(':id')
+  @ApiExcludeEndpoint()
   removeCard() {
     throw new MethodNotAllowedException();
   }

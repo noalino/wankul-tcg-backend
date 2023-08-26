@@ -36,10 +36,8 @@ class PaginationQueryDto {
 
 export class GetCardsQueryDto extends PaginationQueryDto {
   @ApiPropertyOptional({
-    isArray: true,
     enum: Artist,
     description: createEnumDescription(Artist),
-    example: 'You can pass a single value (4) or a list of values (0,1,2).',
   })
   @IsArray()
   @ArrayNotEmpty()
@@ -56,10 +54,8 @@ export class GetCardsQueryDto extends PaginationQueryDto {
   artist?: Artist[];
 
   @ApiPropertyOptional({
-    isArray: true,
     enum: Effigy,
     description: createEnumDescription(Effigy),
-    example: 'You can pass a single value (0) or a list of values (0,1,2).',
   })
   @IsArray()
   @ArrayNotEmpty()
@@ -76,10 +72,8 @@ export class GetCardsQueryDto extends PaginationQueryDto {
   effigy?: Effigy[];
 
   @ApiPropertyOptional({
-    isArray: true,
     enum: Rarity,
     description: createEnumDescription(Rarity),
-    example: 'You can pass a single value (3) or a list of values (0,1,2).',
   })
   @IsArray()
   @ArrayNotEmpty()
